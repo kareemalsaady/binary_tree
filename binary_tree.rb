@@ -52,26 +52,6 @@ class BinaryTree
 		check_if_available(current_node, new_node)
 	end
 
-  #def breadth_first_search(value)
-  #  searched = value
-  #  q = [@root]
-  #  @size.times do
-  #    first = q[0]
-  #    p first.value
-  #    if first.value == searched
-  #      puts "#{searched} has been located"
-  #      break
-  #    end
-  #    if q[0].child_left != nil
-  #      q << q[0].child_left
-  #    end
-  #    if q[0].child_right != nil
-  #      q << q[0].child_right
-  #    end
-  #    q.shift
-  #  end
-  #    puts "#{searched} is not in this tree"
-  #end
 
   def breadth_first_search(value)
     searched = value
@@ -100,17 +80,47 @@ class BinaryTree
     end
   end
 
+  def depth_first_search(value)
+    searched = value
+    stack = [0]
+    current = @root
+    while current != nil || !stack.empty? do
+          if current != nil
+            #if current == nil then p current else p current.value end
+            stack.unshift(current)
+            current = current.child_left
+          else
+            temp = stack[0].child_right
+            if temp == nil
+              temp = stack[0]
+              p temp.value
+              stack.shift
+              while temp == stack[0].child_right && !stack.empty? do
+               temp = stack[0]
+               stack.shift
+               p temp.value
+              end
+            else
+              current = temp
+            end
+          end
+      end
+  end
+
 
 end
 
-def build_tree(array,tree_name)
-	tree_name = BinaryTree.new
-	array.map do |n|
-		tree_name.add_node(n)
-	end
-	p tree_name
-end
+#def build_tree(array,tree_name)
+	#tree_name = BinaryTree.new
+	#array.map do |n|
+	#	tree_name.add_node(n)
+	#end
+	#p tree_name
+#end
 
 array = [14,23,13,16,15,4,9,7,34,54,3,56]
-test = build_tree(array,"tom")
-test.breadth_first_search(4)
+#array = [20, 10, 30, 5, 15, 25, 35]
+test = BinaryTree.new
+array.map {|n| test.add_node(n)}
+#p test
+test.depth_first_search(11)
